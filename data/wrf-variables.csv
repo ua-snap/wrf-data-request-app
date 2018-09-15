@@ -1,0 +1,47 @@
+Variable,Name,Dimensions,Units
+ACSNOW,Water equivalent of accum. snow depth,2,kg/m^2
+ALBEDO,Albedo,2,%
+CANWAT,Plant canopy surface water,2,kg/m^2
+CLDFRA,Total cloud cover,2,%
+CLDFRA_HIGH,High level cloud cover,2,%
+CLDFRA_LOW,Low level cloud cover,2,%
+CLDFRA_MID,Mid level cloud cover,2,%
+GHT,Geopotential height,3,gpm
+HFX,Sensible heat flux,2,W/m^2
+LH,Latent heat flux,2,W/m^2
+LWDNB,Downward long wave flux,2,W/m^2
+LWDNBC,Clear sky downward long wave flux,2,W/m^2
+LWUPB,Upward long wave flux,2,W/m^2
+LWUPBC,Clear sky upward long wave flux,2,W/m^2
+OMEGA,Pressure vertical velocity,3,Pa/s
+PCPC,Accumulated total precipitation,2,kg/m^2
+PCPNC,Accumulated large-scale precipitation,2,kg/m^2
+PCPT,Total precipitation,2,kg/m^2
+POTEVP,Accumulated potential evaporation,2,kg/m^2
+PSFC,Surface pressure,2,Pa
+Q2,Specific humidity at 2m height,2,kg/kg
+QBOT,Specific humidity at lowest model level,2,kg/kg
+QVAPOR,Specific humidity,3,kg/kg
+SEAICE,Ice concentration,2,fraction
+SH2O,Liquid volumetric soil moisture (non-frozen),3,fraction
+SLP,Mean sea level pressure (ETA model),2,Pa
+SMOIS,Volumetric soil moisture content,3,fraction
+SNOW,Snow water equivalent,2,kg/m^2
+SNOWC,Snow cover,2,fraction
+SNOWH,Snow depth,2,m
+SWDNB,Downward short wave flux,2,W/m^2
+SWDNBC,Clear sky downward solar flux,2,W/m^2
+SWUPB,Upward short wave flux,2,W/m^2
+SWUPBC,Clear sky upward solar flux,2,W/m^2
+T,Temperature,3,K
+T2,Temperature at 2m height,2,K
+TBOT,Temperature at lowest model level,2,K
+TSK,Surface skin temperature,2,K
+TSLB,Soil temperature,2,K
+U,u-component of wind,3,m/s
+U10,u-component of wind at 10m height,2,m/s
+UBOT,u-component of wind at lowest model level,2,m/s
+V,v-component of wind,3,m/s
+V10,v-component of wind at 10m height,2,m/s
+VBOT,v-component of wind at lowest model level,2,m/s
+VEGFRA,Vegetation fraction,2,%
