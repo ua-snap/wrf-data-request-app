@@ -137,8 +137,8 @@ def update_rows( row_update, aggregation, model_scenario, rows ):
 
 @app.callback(
     Output('datatable-wrf-variables', 'selected_row_indices'),
-    [Input('model-scenario-checklist','value')],
-    [State('time-checklist', 'value')])
+    [Input('model-scenario-checklist','value'),
+    Input('time-checklist', 'value')])
 def update_rows_selector( model_scenario, aggregation ):
     rows = ALL_DATA[model_scenario]
     l = [ i[aggregation] for i in rows ]
