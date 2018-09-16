@@ -108,11 +108,12 @@ app.layout = html.Div([
     [ State('email-input', 'value'), 
     State('datatable-wrf-variables-selection', 'rows')] )
 def send_email( nclicks, email_addy, rows ):
-    for model_scenario,rows in ALL_DATA.items(): 
-        df = pd.DataFrame.from_records( rows )
-        out_fn = './tmp_output/temp-selection-output_{}_{}.csv'.format(model_scenario.replace(' ','_'), email_addy)
-        df.to_csv( out_fn, sep=',', index=False )
-    return out_fn
+    if email_addy:
+        for model_scenario,rows in ALL_DATA.items(): 
+            df = pd.DataFrame.from_records( rows )
+            out_fn = './tmp_output/temp-selection-output_{}_{}.csv'.format(model_scenario.replace(' ','_'), email_addy)
+            df.to_csv( out_fn, sep=',', index=False )
+        return out_fn
 
 @app.callback(
     Output('datatable-wrf-variables-selection', 'rows'),
