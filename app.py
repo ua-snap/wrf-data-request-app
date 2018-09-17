@@ -5,7 +5,8 @@ import dash_html_components as html
 import dash_table_experiments as dt
 import pandas as pd
 import numpy as np
-import plotly, json, copy
+import plotly, json, copy, os
+
 # email imports 
 import smtplib, glob
 from os.path import basename
@@ -128,7 +129,7 @@ def send_email( nclicks, email_addy, rows ):
         Best Wishes,\n
         SNAP Data Team'
         '''        
-        files=[i for i in glob.glob('./tmp_output/*{}*.csv').format(email_addy) ]
+        files=[i for i in glob.glob('./tmp_output/*{}*.csv'.format(email_addy)) ]
         out = send_mail( [email_addy, 'malindgren@alaska.edu'], 
             '[SNAP Data Request] Your WRF Data Requested Variables Reference', 
             EMAIL_BODY, files )
