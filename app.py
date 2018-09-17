@@ -128,8 +128,11 @@ def send_email( nclicks, email_addy, rows ):
         Best Wishes,\n
         SNAP Data Team'
         '''        
-        send_mail( ['malindgren@alaska.edu', 'lindgren.mike@gmail.com'], '[SNAP Data Request] Your WRF Data Requested Variables Reference', EMAIL_BODY, 
-                files=[i for i in glob.glob('./tmp_output/*.csv')])
+        files=[i for i in glob.glob('./tmp_output/*{}*.csv').format(email_addy) ]
+        out = send_mail( [email_addy, 'malindgren@alaska.edu'], 
+            '[SNAP Data Request] Your WRF Data Requested Variables Reference', 
+            EMAIL_BODY, files )
+        _ = [ os.unlink(fn) for fn in files ]
     return 1
 
 @app.callback(
@@ -167,7 +170,7 @@ def send_mail( send_to, subject, text, files=None ):
     assert isinstance(send_to, list)
 
     username = "snap.data.requests@gmail.com"
-    password = "" # WE NEED A WAY TO ENCRYPT THIS.
+    password = os.environ['GPASS']
 
     msg = MIMEMultipart()
     msg['From'] = username
