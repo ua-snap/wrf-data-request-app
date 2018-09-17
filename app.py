@@ -1,4 +1,4 @@
-import dash
+import dash, flask
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
@@ -17,8 +17,12 @@ from email.utils import COMMASPACE, formatdate
 
 app = dash.Dash()
 
-app.scripts.config.serve_locally = True
+# app.scripts.config.serve_locally = True
 # app.css.config.serve_locally = True
+server = flask.Flask(__name__)
+server.secret_key = os.environ.get('secret_key', 'secret')
+app = dash.Dash(name = __name__, server = server)
+app.config.supress_callback_exceptions = True
 
 # setup our data
 DF_VARS = pd.read_csv( './data/wrf-variables.csv' )
@@ -203,4 +207,5 @@ app.css.append_css({
 })
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    # app.run_server(debug=True)
+    app.server.run()
