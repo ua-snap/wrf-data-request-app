@@ -113,7 +113,6 @@ app.layout = html.Div([
     [ State('email-input', 'value'), 
     State('datatable-wrf-variables-selection', 'rows')] )
 def send_email( nclicks, email_addy, rows ):
-<<<<<<< HEAD
     if email_addy:
         out_fn_list = []
         for model_scenario,rows in ALL_DATA.items(): 
@@ -132,13 +131,6 @@ def send_email( nclicks, email_addy, rows ):
         send_mail( ['malindgren@alaska.edu', 'lindgren.mike@gmail.com'], '[SNAP Data Request] Your WRF Data Requested Variables Reference', EMAIL_BODY, 
                 files=[i for i in glob.glob('./tmp_output/*.csv')])
     return 1
-=======
-    for model_scenario,rows in ALL_DATA.items(): 
-        df = pd.DataFrame.from_records( rows )
-        out_fn = './tmp_output/temp-selection-output_{}_{}.csv'.format(model_scenario.replace(' ','_'), email_addy)
-        df.to_csv( out_fn, sep=',', index=False )
-    return out_fn
->>>>>>> parent of df71171... updates
 
 @app.callback(
     Output('datatable-wrf-variables-selection', 'rows'),
