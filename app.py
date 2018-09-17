@@ -3,11 +3,16 @@ from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table_experiments as dt
-import json
 import pandas as pd
 import numpy as np
-import plotly
-import copy
+import plotly, json, copy
+# email imports 
+import smtplib, glob
+from os.path import basename
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import COMMASPACE, formatdate
 
 app = dash.Dash()
 
@@ -109,11 +114,23 @@ app.layout = html.Div([
     State('datatable-wrf-variables-selection', 'rows')] )
 def send_email( nclicks, email_addy, rows ):
     if email_addy:
+        out_fn_list = []
         for model_scenario,rows in ALL_DATA.items(): 
             df = pd.DataFrame.from_records( rows )
             out_fn = './tmp_output/temp-selection-output_{}_{}.csv'.format(model_scenario.replace(' ','_'), email_addy)
             df.to_csv( out_fn, sep=',', index=False )
-        return out_fn
+            out_fn_list = out_fn_list + [out_fn]
+    
+        EMAIL_BODY='''
+        'Greetings,\n\n
+        Here are the CSV file references of the variables you requested.\n\n
+        We will be in touch with the data once is has been packaged up.\n\n
+        Best Wishes,\n
+        SNAP Data Team'
+        '''        
+        send_mail( ['malindgren@alaska.edu', 'lindgren.mike@gmail.com'], '[SNAP Data Request] Your WRF Data Requested Variables Reference', EMAIL_BODY, 
+                files=[i for i in glob.glob('./tmp_output/*.csv')])
+    return 1
 
 @app.callback(
     Output('datatable-wrf-variables-selection', 'rows'),
@@ -146,18 +163,36 @@ def update_rows_selector( model_scenario, aggregation ):
     ind, = np.where( np.array(l) == 'X' )
     return ind.tolist()
 
-# @app.callback(
-#     Output('datatable-wrf-variables','selected_row_indices'),
-#     [Input('time-checklist', 'value')],
-#     [State('datatable-wrf-variables-selection', 'rows')])
-# def update_table_selection(aggregation, rows):
-#     row_copy = copy.deepcopy( rows )
-#     table_selection = []
-#     for idx,row in enumerate(row_copy):
-#         if row[aggregation] == 'X':
-#             table_selection = table_selection + [idx]
-#     return table_selection
+def send_mail( send_to, subject, text, files=None ):
+    assert isinstance(send_to, list)
 
+    username = "snap.data.requests@gmail.com"
+    password = "" # WE NEED A WAY TO ENCRYPT THIS.
+
+    msg = MIMEMultipart()
+    msg['From'] = username
+    msg['To'] = COMMASPACE.join(send_to)
+    msg['Date'] = formatdate(localtime=True)
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(text))
+
+    for f in files or []:
+        with open(f, "rb") as fil:
+            part = MIMEApplication(
+                fil.read(),
+                Name=basename(f)
+            )
+        # After the file is closed
+        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+        msg.attach(part)
+
+    server = smtplib.SMTP("smtp.gmail.com:587")
+    server.starttls()
+    server.login(username,password)
+    server.sendmail(username, send_to, msg.as_string())
+    server.quit()
+    
 
 app.css.append_css({
     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
