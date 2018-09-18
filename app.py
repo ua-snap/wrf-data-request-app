@@ -54,7 +54,8 @@ app.layout = html.Div([
                 n_clicks = 0,
                 className='button'
                 ),
-                html.Div(id='email-button-clicked', style={'fontColor':'red'}),
+                dcc.Markdown( id='email-button-clicked', style={'fontColor':'red'} )
+                # html.Div(id='email-button-clicked', style={'fontColor':'red'}),
                 # html.Textarea(id='email-button-clicked', style={'fontColor':'red'}),
                 ],
                 # style = dict(
@@ -161,9 +162,9 @@ def email_clicked( n_clicks, email_addy ):
     [State('datatable-wrf-variables-selection', 'rows')])
 def update_rows( row_update, aggregation, model_scenario, rows ):
     if model_scenario in ALL_DATA.keys():
-        row_copy = ALL_DATA[ model_scenario ]
+        row_copy = copy.deepcopy( ALL_DATA[ model_scenario ] )
     else:
-        row_copy = rows # copy.deepcopy( rows )
+        row_copy = copy.deepcopy( rows )
     
     for idx,row in enumerate( row_copy ):
         if idx in row_update:
