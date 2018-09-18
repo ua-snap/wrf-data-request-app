@@ -127,11 +127,11 @@ def send_email( nclicks, email_addy, rows ):
             out_fn_list = out_fn_list + [out_fn]
     
         EMAIL_BODY='''
-        'Greetings,\n\n
+        Greetings,\n\n
         Here are the CSV file references of the variables you requested.\n\n
         We will be in touch with the data once is has been packaged up.\n\n
         Best Wishes,\n
-        SNAP Data Team'
+        SNAP Data Team
         '''        
         files=[i for i in glob.glob('./tmp_output/*{}*.csv'.format(email_addy)) ]
         out = send_mail( [email_addy, 'malindgren@alaska.edu'], 
