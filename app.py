@@ -54,7 +54,7 @@ app.layout = html.Div([
                 n_clicks = 0,
                 className='button'
                 ),
-                dcc.Markdown( id='email-button-clicked', style={'fontColor':'red'} )
+                dcc.Markdown( id='email-button-clicked', containerProps={'fontColor':'red'} )
                 # html.Div(id='email-button-clicked', style={'fontColor':'red'}),
                 # html.Textarea(id='email-button-clicked', style={'fontColor':'red'}),
                 ],
