@@ -33,7 +33,9 @@ DF_VARS_OUT.loc[:,'hourly'] = ''
 DF_VARS_OUT.loc[:,'daily'] = ''
 DF_VARS_OUT.loc[:,'monthly'] = ''
 
-ALL_DATA = { model_scenario:DF_VARS_OUT.copy(deep=True).to_dict('records') for model_scenario in ['ERA-Interim','GFDL-CM3 Historical','GFDL-CM3 RCP85','NCAR-CCSM4 Historical','NCAR-CCSM4 RCP85']}
+model_scenarios = ['ERA-Interim','GFDL-CM3 Historical','GFDL-CM3 RCP85','NCAR-CCSM4 Historical','NCAR-CCSM4 RCP85']
+ALL_DATA = { model_scenario:DF_VARS_OUT.copy(deep=True).to_dict('records') 
+            for model_scenario in model_scenarios}
 
 app.layout = html.Div([
     html.Div([html.H4('WRF Variables Selector')]),
@@ -49,13 +51,16 @@ app.layout = html.Div([
                 children = 'send_email',
                 id = 'send-email-button',
                 type = 'submit',
-                n_clicks = 0
+                n_clicks = 0,
+                className='button'
                 ),
+                html.Div(id='email-button-clicked', style={'fontColor':'red'}),
+                # html.Textarea(id='email-button-clicked', style={'fontColor':'red'}),
                 ],
-                style = dict(
-                    width = '30%',
-                    display = 'table-cell',
-                    ),
+                # style = dict(
+                #     width = '30%',
+                #     display = 'table-cell',
+                #     ),
                 className='row'),
 
         html.Div([
@@ -139,6 +144,14 @@ def send_email( nclicks, email_addy, rows ):
             EMAIL_BODY, files )
         _ = [ os.unlink(fn) for fn in files ]
     return 1
+
+@app.callback(
+    Output('email-button-clicked', 'children'),
+    [Input('send-email-button', 'n_clicks')],
+    [State('email-input', 'value')] )
+def email_clicked( n_clicks, email_addy ):
+    if email_addy:
+        return 'email sent to: {}'.format( email_addy )
 
 @app.callback(
     Output('datatable-wrf-variables-selection', 'rows'),
