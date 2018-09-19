@@ -156,17 +156,16 @@ def email_clicked( n_clicks, email_addy ):
 
 @app.callback(
     Output('datatable-wrf-variables-selection', 'rows'),
-    [Input('datatable-wrf-variables', 'selected_row_indices'),
-    Input('time-checklist', 'value'),
+    [Input('time-checklist', 'value'),
     Input('model-scenario-checklist','value')] )
-def update_rows( row_update, aggregation, model_scenario ):
+def update_rows( aggregation, model_scenario ):
     row_copy = copy.deepcopy( ALL_DATA[ model_scenario ] )
     df = pd.DataFrame( row_copy )
     df[ aggregation ] = ''
     df.loc[ row_update, aggregation ] = 'X'
     ALL_DATA[ model_scenario ] = df.to_dict( 'records' )
     return df.to_dict( 'records' )
-
+    # Input('datatable-wrf-variables', 'selected_row_indices'),
 @app.callback(
     Output('datatable-wrf-variables', 'selected_row_indices'),
     [Input('model-scenario-checklist','value'),
