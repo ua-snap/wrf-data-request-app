@@ -172,7 +172,7 @@ def update_rows( row_update, aggregation, model_scenario ):
     [Input('model-scenario-checklist','value'),
     Input('time-checklist', 'value')])
 def update_rows_selector( model_scenario, aggregation ):
-    rows = ALL_DATA[model_scenario]
+    rows = copy.deepcopy(ALL_DATA[model_scenario])
     l = [ i[aggregation] for i in rows ]
     ind, = np.where( np.array(l) == 'X' )
     return ind.tolist()
