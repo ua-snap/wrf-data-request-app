@@ -158,22 +158,14 @@ def email_clicked( n_clicks, email_addy ):
     Output('datatable-wrf-variables-selection', 'rows'),
     [Input('datatable-wrf-variables', 'selected_row_indices'),
     Input('time-checklist', 'value'),
-    Input('model-scenario-checklist','value')],
-    [State('datatable-wrf-variables-selection', 'rows')])
-def update_rows( row_update, aggregation, model_scenario, rows ):
-    if model_scenario in ALL_DATA.keys():
-        row_copy = copy.deepcopy( ALL_DATA[ model_scenario ] )
-    else:
-        row_copy = copy.deepcopy( rows )
-    
-    for idx,row in enumerate( row_copy ):
-        if idx in row_update:
-            row[ aggregation ] = 'X'
-        else:
-            row[ aggregation ] = ''
-
-    ALL_DATA[ model_scenario ] = row_copy
-    return row_copy
+    Input('model-scenario-checklist','value')] )
+def update_rows( row_update, aggregation, model_scenario ):
+    row_copy = copy.deepcopy( ALL_DATA[ model_scenario ] )
+    df = pd.DataFrame( row_copy )
+    df[ aggregation ] = ''
+    df.loc[ row_update, aggregation ] = 'X'
+    ALL_DATA[ model_scenario ] = df.to_dict( 'records' )
+    return df.to_dict( 'records' )
 
 @app.callback(
     Output('datatable-wrf-variables', 'selected_row_indices'),
